@@ -5,6 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\ScrapeTheFirstAge;
+use App\Console\Commands\CrawlCommand;
+use App\Console\Commands\UpdateFirstPagesOnly;
 
 class Kernel extends ConsoleKernel
 {
@@ -14,7 +16,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        ScrapeTheFirstAge::class,
+        CrawlCommand::class,
+        UpdateFirstPagesOnly::class,
     ];
 
     /**
@@ -25,8 +28,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('crawl')
-            ->everyFifteenMinutes();
+        $schedule->command('crawl:first')
+            ->daily();
+        $schedule->command('daily:word')->daily();
     }
 
     /**

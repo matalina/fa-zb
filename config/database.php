@@ -38,6 +38,18 @@ return [
             'database' => env('DB_DATABASE', database_path('fa.sqlite')),
             'prefix' => '',
         ],
+        
+         'chat' => [
+            'driver' => 'sqlite',
+            'database' => env('CHAT_DATABASE', database_path('chat.sqlite')),
+            'prefix' => '',
+        ],
+        
+         'spur' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('dailyspur.sqlite')),
+            'prefix' => '',
+        ],
 
         'mysql' => [
             'driver' => 'mysql',
