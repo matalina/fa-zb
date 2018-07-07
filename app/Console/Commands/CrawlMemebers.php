@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Console\Command;
+use App\Member;
+use Carbon\Carbon;
 
 class CrawlMemebers extends Command
 {
@@ -13,6 +15,8 @@ class CrawlMemebers extends Command
     protected $description = 'Crawl members list';
 
     protected $client;
+    protected $memeber;
+    protected $pages = true;
 
     public function __construct()
     {
@@ -31,19 +35,45 @@ class CrawlMemebers extends Command
         ));
 
         $this->client->setClient($guzzleClient);
+        $this->member = [];
     }
 
     public function handle()
     {
         $this->info('Started');
-        $url = 'http://w11.zetaboards.com/TheFirstAge/index/';
-        $crawler = $this->client->request('GET', $url);
+        $page = 1;
+        $url = 'http://w11.zetaboards.com/TheFirstAge/members/';
+        $pages = true;
+        
+        while($this->pages) {
+            $crawler = $this->client->request('GET', $url.$page);
+                
+            $crawler->filter('#member_list_full tr')->each(function ($node) {
+                $member = [];
+                $node->children()->each(function($child) use (& $member) {
+                    if($child->text() == 'No members') {
+                        $this->pages = false;
+                    }
+                    else {
+                        $member[] = $child->text();
+                    }
+                });
+                $this->member[] = $member;
 
-        dd($crawler);
-
-        $crawler->filter('#member_list_full tbody tr')->each(function ($node) {
-            dd($node);
-        });
+            });
+            $page++;
+        }
+        foreach($this->member as $member) {
+            if(count($member) > 1 && $member[0] != 'Member Name') {
+                $date = Carbon::parse($member[3]);
+                
+                Member::create([
+                    'username' => $member[0],
+                    'join_date' => $date->toDateTimeString(), 
+                ]);
+            }
+        }
+        
         $this->info('Ended');
     }
 }

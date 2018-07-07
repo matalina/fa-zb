@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMembersTable extends Migration
+class CreateForumsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateMembersTable extends Migration
      */
     public function up()
     {
-        Schema::connection('fa_full')->create('members', function (Blueprint $table) {
+        Schema::create('forums', function (Blueprint $table) {
             $table->increments('id');
-
-            $table->string('username');
-            $table->dateTime('join_date');
-
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ class CreateMembersTable extends Migration
      */
     public function down()
     {
-        Schema::connection('fa_full')->dropIfExists('members');
+        Schema::dropIfExists('forums');
     }
 }

@@ -13,7 +13,7 @@ class CreateDailySpurDatabase extends Migration
      */
     public function up()
     {
-        Schema::connection('spur')->create('words', function(Blueprint $table) 
+      /*  Schema::connection('spur')->create('words', function(Blueprint $table) 
         {
             $table->increments('id');
             
@@ -40,7 +40,7 @@ class CreateDailySpurDatabase extends Migration
 
                 App\DailySpur\Word::create($data);
             }
-        }
+        }*/
     }
 
     /**
