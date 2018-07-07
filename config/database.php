@@ -38,6 +38,12 @@ return [
             'database' => env('DB_DATABASE', database_path('fa.sqlite')),
             'prefix' => '',
         ],
+
+        'fa_full' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('fa_full.sqlite')),
+            'prefix' => '',
+        ],
         
          'chat' => [
             'driver' => 'sqlite',
